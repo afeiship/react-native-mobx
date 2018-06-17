@@ -9,15 +9,12 @@ import {
   Platform,
   StyleSheet,
   Text,
+  Button,
   View
 } from 'react-native';
-
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' +
-    'Cmd+D or shake for dev menu',
-  android: 'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
+import { Provider } from 'mobx-react';
+import { inject, observer } from 'mobx-react/native';
+import rootStore from './store/index';
 
 const styles = {
   container: {
@@ -30,30 +27,49 @@ const styles = {
     fontSize: 20,
     textAlign: 'center',
     margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#999',
-    marginBottom: 5,
-  },
+  }
 };
 
+@inject('rootStore')
+@observer
+class App extends Component {
 
-export default class extends Component {
+  add = () => {
+    this.props.rootStore.add();
+    console.warn(this.props.rootStore)
+  };
+
+  reduce = () => {
+    this.props.rootStore.reduce();
+    console.warn(this.props.rootStore)
+  };
+
+  reset = () => {
+    // alert('reset');
+  };
+
   render() {
+    const { data,sum } = this.props.rootStore;
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
           Welcome to React Native-FEI!
+          <Text>{sum}</Text>
         </Text>
-        <Text style={styles.instructions}>
-          To get started, edit App.js
-        </Text>
-        <Text style={styles.instructions}>
-          {instructions}
-        </Text>
+        <Button title="Add" onPress={this.add} />
+        <Button title="Reduce" onPress={this.reduce} />
+        <Button title="Reset" onPress={this.reset} />
       </View>
     );
   }
+}
+
+
+export default function () {
+  return (
+    <Provider rootStore={rootStore}>
+      <App />
+    </Provider>
+  );
 }
 
