@@ -1,4 +1,4 @@
 import { AppRegistry } from 'react-native';
-import App from './app1';
+import App from './src/app';
 
 AppRegistry.registerComponent('mobxApp', () => App);
