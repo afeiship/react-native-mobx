@@ -1,14 +1,13 @@
 import { observable, computed, action } from 'mobx'
 import data from '../assets/data.json';
-class RootStore{
+class RootStore {
     @observable
-    data = {};
+    data = {
+        sum: 0,
+        githubData: {}
+    };
 
-    @computed get sum(){
-        return this.data.sum;
-    }
-
-    constructor(inData){
+    constructor(inData) {
         this.data = inData;
     }
 
@@ -22,6 +21,20 @@ class RootStore{
     reduce() {
         const { sum } = this.data;
         this.data.sum = sum - 1;
+    }
+
+    @action
+    reset() {
+        this.data.sum = 1;
+    }
+
+    @action
+    fetchData() {
+        fetch('https://api.github.com/users/afeiship')
+            .then(resp => resp.json())
+            .then(resp => {
+                this.data.githubData = resp;
+            });
     }
 }
 

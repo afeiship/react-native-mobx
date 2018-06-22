@@ -19,9 +19,9 @@ import rootStore from './store/index';
 const styles = {
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: '#F5FCFF',
+    alignItems:'center',
+    justifyContent:'center'
   },
   welcome: {
     fontSize: 20,
@@ -36,29 +36,37 @@ class App extends Component {
 
   add = () => {
     this.props.rootStore.add();
-    console.warn(this.props.rootStore)
   };
 
   reduce = () => {
     this.props.rootStore.reduce();
-    console.warn(this.props.rootStore)
   };
 
   reset = () => {
-    // alert('reset');
+    this.props.rootStore.reset();
+  };
+
+  fetchData = () => { 
+    this.props.rootStore.fetchData();
   };
 
   render() {
-    const { data,sum } = this.props.rootStore;
+    const { data } = this.props.rootStore;
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
           Welcome to React Native-FEI!
-          <Text>{sum}</Text>
+          <Text>{data.sum}</Text>
         </Text>
+        <View>
+          <Text style={{ color: '#f00' }}>{
+            JSON.stringify(data.githubData, null,4)
+          }</Text>
+        </View>
         <Button title="Add" onPress={this.add} />
         <Button title="Reduce" onPress={this.reduce} />
         <Button title="Reset" onPress={this.reset} />
+        <Button title="Fetch" onPress={this.fetchData} />
       </View>
     );
   }
